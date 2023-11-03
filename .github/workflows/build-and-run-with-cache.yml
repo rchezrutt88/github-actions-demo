@@ -8,20 +8,20 @@ jobs:
         ports:
           - 5000:5000
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      - name: set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: cache docker layers
+      - name: Cache docker layers
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - name: build image
+      - name: Build image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -29,5 +29,5 @@ jobs:
           tags: localhost:5000/earth-to-max:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-      - name: run image
+      - name: Run image
         run: docker run earth-to-max:latest /src/script.sh -a
