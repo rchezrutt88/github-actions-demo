@@ -1,8 +1,26 @@
-  on: [push]
-  jobs:
-    build-and-run:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - name: build image
-          run: docker build .
+on: [ push ]
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: cache docker layers
+        uses: actions/cache@3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: build image
+        uses: docker/build-push-actions@v5
+        with:
+          context: .
+          push: false
+          tags: earth-to-max:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+      - name: run image
+        run: docker run earth-to-max:latest /src/script.sh -a
