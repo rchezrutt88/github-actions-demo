@@ -15,7 +15,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
       - name: build image
-        uses: docker/build-push-actions@v5
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: false
