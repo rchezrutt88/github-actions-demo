@@ -5,6 +5,8 @@ jobs:
     services:
       registry:
         image: registry:2
+        ports:
+          - 5000:5000
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -22,7 +24,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: earth-to-max:latest
+          tags: localhost:5000/earth-to-max:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
       - name: run image
