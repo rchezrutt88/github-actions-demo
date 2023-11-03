@@ -32,9 +32,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: earth-to-max:latest
+          tags: localhost:5000/earth-to-max:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
       - name: Run image
-        run: docker run earth-to-max:latest /src/script.sh -a
+        run: docker run localhost:5000/earth-to-max:latest /src/script.sh -a
