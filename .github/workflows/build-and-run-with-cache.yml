@@ -2,6 +2,9 @@ on: [ push ]
 jobs:
   build-and-run:
     runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
     steps:
       - name: checkout
         uses: actions/checkout@v4
